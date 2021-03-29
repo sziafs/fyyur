@@ -1,8 +1,8 @@
 {% extends 'layouts/main.html' %}
 {% block title %}New Show Listing{% endblock %}
 {% block content %}
-  <div class="form-wrapper">
-    <form method="post" class="form">
+  <div id="create-show-form-wrapper" class="form-wrapper">
+    <form id="create-show-form" method="post" action="/shows/create" class="form">
       <h3 class="form-heading">List a new show</h3>
       <div class="form-group">
         <label for="artist_id">Artist ID</label>
@@ -21,4 +21,9 @@
       <input type="submit" value="Create Venue" class="btn btn-primary btn-lg btn-block">
     </form>
   </div>
+  <script>
+    document.getElementById('create-show-form').onsubmit = (e) => {
+      document.getElementById('create-show-form-wrapper').className += ' loading ...';
+    }
+  </script>
 {% endblock %}
