@@ -1,8 +1,11 @@
-import datetime
-from flask import render_template, request
+import sys
+from flask import render_template, request, flash
 
 from models import Show
-from forms import ShowForm
+from forms import ShowForm, datetime
+
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 def shows():
   # displays list of shows at /shows

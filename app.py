@@ -3,14 +3,13 @@
 #----------------------------------------------------------------------------#
 
 import json
-from flask import Flask, render_template, request, Response, flash, redirect, url_for
+from flask import Flask, render_template
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
-from forms import *
 
 from models import db
 
@@ -34,6 +33,10 @@ migrate = Migrate(app, db)
 
 app.jinja_env.filters['datetime'] = format_datetime
 
+#----------------------------------------------------------------------------#
+# Blueprints registration.
+#----------------------------------------------------------------------------#
+
 from venue_bp import venue_bp
 from artist_bp import artist_bp
 from show_bp import show_bp
@@ -42,12 +45,17 @@ app.register_blueprint(venue_bp, url_prefix='/venues')
 app.register_blueprint(artist_bp, url_prefix='/artists')
 app.register_blueprint(show_bp, url_prefix='/shows')
 
-from models import Show
+#----------------------------------------------------------------------------#
+# Home.
+#----------------------------------------------------------------------------#
 
 @app.route('/')
 def index():
-  print(request)
   return render_template('pages/home.html')
+
+#----------------------------------------------------------------------------#
+# Error handlers.
+#----------------------------------------------------------------------------#
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -56,7 +64,6 @@ def not_found_error(error):
 @app.errorhandler(500)
 def server_error(error):
     return render_template('errors/500.html'), 500
-
 
 if not app.debug:
     file_handler = FileHandler('error.log')

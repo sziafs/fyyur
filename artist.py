@@ -1,5 +1,5 @@
-from flask import render_template, redirect, url_for, request, flash
 import sys
+from flask import render_template, redirect, url_for, request, flash
 
 from models import Artist
 from forms import ArtistForm

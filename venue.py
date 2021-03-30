@@ -1,7 +1,11 @@
-from flask import render_template, redirect, url_for
+import sys
+from flask import render_template, redirect, url_for, request, flash
 
 from models import Venue
 from forms import VenueForm
+
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 def venues():
   # TODO: replace with real venues data.
