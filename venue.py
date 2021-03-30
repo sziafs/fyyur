@@ -36,10 +36,12 @@ def search_venues():
 
 def show_venue(venue_id):
     venue = Venue.query.get(venue_id)
+    genres = [venue_genre.name for venue_genre in venue.genres]
+
     data = {
         'id': venue.id,
         'name': venue.name,
-        'genres': ['Jazz', 'Reggae', 'Swing', 'Classical', 'Folk'],
+        'genres': genres,
         'address': venue.address,
         'city': venue.city, 
         'state': venue.state,
