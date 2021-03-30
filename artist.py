@@ -77,7 +77,7 @@ def create_artist_submission():
 
 def edit_artist(artist_id):
     artist = Artist.query.get(artist_id)
-
+    
     form = ArtistForm()
     form.name.default = artist.name
     form.city.default = artist.city

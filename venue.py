@@ -1,5 +1,5 @@
 import sys
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template, redirect, url_for, request, flash, abort, jsonify
 
 from models import Venue
 from forms import VenueForm
@@ -22,7 +22,6 @@ def venues():
     })
 
     return render_template('pages/venues.html', areas=data);
-
 
 def search_venues():
     search_term = request.form.get('search_term', '')
@@ -129,9 +128,17 @@ def edit_venue_submission(venue_id):
     return redirect(url_for('venue_bp.show_venue', venue_id=venue_id))
 
 def delete_venue(venue_id):
-    # TODO: Complete this endpoint for taking a venue_id, and using
-    # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
-
-    # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
-    # clicking that button delete it from the db then redirect the user to the homepage
+    try:
+        venue = Venue.query.get(venue_id)
+        db.session.delete(venue)
+        db.session.commit()
+        flash('This venue was successfully deleted!')
+        return render_template('pages/home.html')
+    except:
+        db.session.rollback()
+        print(sys.exc_info())
+        flash('An error occurred. This venue could not be deleted.')
+    finally:
+        db.session.close()
+    
     return None
