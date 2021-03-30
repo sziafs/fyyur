@@ -23,8 +23,6 @@ def search_artists():
 
 def show_artist(artist_id):
     artist = Artist.query.get(artist_id)
-    # genres = [artist_genre.name for artist_genre in artist.genres]
-
     data = {
         'id': artist.id,
         'name': artist.name,
@@ -60,8 +58,12 @@ def create_artist_submission():
         city=request.form.get('city'),
         state=request.form.get('state'),
         phone=request.form.get('phone'),
-        image_link=request.form.get('image_link'),
+        genres=request.form.getlist('genres'),
         facebook_link=request.form.get('facebook_link'),
+        image_link=request.form.get('image_link'),
+        website=request.form.get('website'),
+        seeking_venue=request.form.get('seeking_venue'),
+        seeking_description=request.form.get('seeking_description'),
     )
 
     try:
@@ -85,8 +87,12 @@ def edit_artist(artist_id):
     form.city.default = artist.city
     form.state.default = artist.state
     form.phone.default = artist.phone
-    form.image_link.default = artist.image_link
+    form.genres.default = artist.genres
     form.facebook_link.default = artist.facebook_link
+    form.image_link.default = artist.image_link
+    form.website_link.default = artist.website
+    form.seeking_venue.default = artist.seeking_venue
+    form.seeking_description.default = artist.seeking_description
     form.process()
 
     return render_template('forms/edit_artist.html', form=form, artist=artist)

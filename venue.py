@@ -36,8 +36,6 @@ def search_venues():
 
 def show_venue(venue_id):
     venue = Venue.query.get(venue_id)
-    # genres = [venue_genre.name for venue_genre in venue.genres]
-
     data = {
         'id': venue.id,
         'name': venue.name,
@@ -105,8 +103,12 @@ def edit_venue(venue_id):
     form.state.default = venue.state
     form.address.default = venue.address
     form.phone.default = venue.phone
-    form.image_link.default = venue.image_link
+    form.genres.default = venue.genres
     form.facebook_link.default = venue.facebook_link
+    form.image_link.default = venue.image_link
+    form.website_link.default = venue.website
+    form.seeking_talent.default = venue.seeking_talent
+    form.seeking_description.default = venue.seeking_description
     form.process()
 
     return render_template('forms/edit_venue.html', form=form, venue=venue)
