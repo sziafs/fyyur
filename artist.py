@@ -23,12 +23,12 @@ def search_artists():
 
 def show_artist(artist_id):
     artist = Artist.query.get(artist_id)
-    genres = [artist_genre.name for artist_genre in artist.genres]
+    # genres = [artist_genre.name for artist_genre in artist.genres]
 
     data = {
         'id': artist.id,
         'name': artist.name,
-        'genres': genres,
+        'genres': artist.genres,
         'city': artist.city,
         'state': artist.state,
         'phone': artist.phone,

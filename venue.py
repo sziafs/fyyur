@@ -36,12 +36,12 @@ def search_venues():
 
 def show_venue(venue_id):
     venue = Venue.query.get(venue_id)
-    genres = [venue_genre.name for venue_genre in venue.genres]
+    # genres = [venue_genre.name for venue_genre in venue.genres]
 
     data = {
         'id': venue.id,
         'name': venue.name,
-        'genres': genres,
+        'genres': venue.genres,
         'address': venue.address,
         'city': venue.city, 
         'state': venue.state,
@@ -75,8 +75,12 @@ def create_venue_submission():
         state=request.form.get('state'),
         address=request.form.get('address'),
         phone=request.form.get('phone'),
-        image_link=request.form.get('image_link'),
+        genres=request.form.getlist('genres'),
         facebook_link=request.form.get('facebook_link'),
+        image_link=request.form.get('image_link'),
+        website=request.form.get('website'),
+        seeking_talent=request.form.get('seeking_talent'),
+        seeking_description=request.form.get('seeking_description'),
     )
 
     try:
