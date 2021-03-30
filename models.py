@@ -52,6 +52,22 @@ class Artist(db.Model):
     seeking_description = db.Column(db.String)
     shows = db.relationship('Show', cascade='all, delete-orphan', backref='artist', lazy=True)
 
+    @property
+    def serialize(self):
+         return {
+            'id': self.id,
+            'name': self.name,
+            'city': self.city,
+            'state': self.state,
+            'phone': self.phone,
+            'genres': self.genres,
+            'image_link': self.image_link,
+            'facebook_link': self.facebook_link,
+            'website': self.website,
+            'seeking_venue': self.seeking_venue,
+            'seeking_description': self.seeking_description,
+        }
+
 class Show(db.Model):
     __tablename__='shows'
 
