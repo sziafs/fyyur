@@ -2,8 +2,8 @@ import sys
 from flask import render_template, redirect, url_for, request, flash, abort, jsonify
 from flask_sqlalchemy_session import current_session
 
-from models import Venue
-from forms import VenueForm
+from models import Venue, Show
+from forms import VenueForm, datetime
 
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
@@ -36,6 +36,11 @@ def search_venues():
 
 def show_venue(venue_id):
     venue = Venue.query.get(venue_id)
+
+    current_time = datetime.now().strftime('%m/%d/%Y')
+    past_shows= Show.query.filter_by(venue_id=venue_id).filter(Show.start_time <= current_time)
+    upcoming_shows= Show.query.filter_by(venue_id=venue_id).filter(Show.start_time > current_time)
+
     data = {
         'id': venue.id,
         'name': venue.name,
@@ -49,15 +54,10 @@ def show_venue(venue_id):
         'image_link': venue.image_link,
         'seeking_talent': venue.seeking_talent,
         'seeking_description': venue.seeking_description,
-        'past_shows': [{
-            'artist_id': 4,
-            'artist_name': 'Guns N Petals',
-            'artist_image_link': 'https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80',
-            'start_time': '2019-05-21T21:30:00.000Z'
-        }],
+        'past_shows': [],
         'upcoming_shows': [],
-        'past_shows_count': 1,
-        'upcoming_shows_count': 0,
+        'past_shows_count': past_shows.count(),
+        'upcoming_shows_count': upcoming_shows.count(),
     }
 
     return render_template('pages/show_venue.html', venue=data)

@@ -1,8 +1,8 @@
 import sys
 from flask import render_template, redirect, url_for, request, flash
 
-from models import Artist
-from forms import ArtistForm
+from models import Artist, Show
+from forms import ArtistForm, datetime
 
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
@@ -23,6 +23,11 @@ def search_artists():
 
 def show_artist(artist_id):
     artist = Artist.query.get(artist_id)
+
+    current_time = datetime.now().strftime('%m/%d/%Y')
+    past_shows= Show.query.filter_by(artist_id=artist_id).filter(Show.start_time <= current_time)
+    upcoming_shows= Show.query.filter_by(artist_id=artist_id).filter(Show.start_time > current_time)
+    
     data = {
         'id': artist.id,
         'name': artist.name,
@@ -35,15 +40,10 @@ def show_artist(artist_id):
         'image_link': artist.image_link,
         'seeking_venue': artist.seeking_venue,
         'seeking_description': artist.seeking_description,
-        'past_shows': [{
-            'venue_id': 1,
-            'venue_name': 'The Musical Hop',
-            'venue_image_link': 'https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60',
-            'start_time': '2019-05-21T21:30:00.000Z'
-        }],
+        'past_shows': [],
         'upcoming_shows': [],
-        'past_shows_count': 1,
-        'upcoming_shows_count': 0,
+        'past_shows_count': past_shows.count(),
+        'upcoming_shows_count': upcoming_shows.count(),
     }
     
     return render_template('pages/show_artist.html', artist=data)
