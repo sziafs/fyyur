@@ -161,11 +161,28 @@ def edit_venue(venue_id):
 
     return render_template('forms/edit_venue.html', form=form, venue=venue)
 
-
 def edit_venue_submission(venue_id):
-    # TODO: take values from the form submitted, and update existing
-    # venue record with ID <venue_id> using the new attributes
-    return redirect(url_for('show_venue', venue_id=venue_id))
+    venue = Venue.query.get(venue_id)
+
+    try:
+        venue.name = request.form.get('name')
+        venue.city = request.form.get('city')
+        venue.state = request.form.get('state')
+        venue.address = request.form.get('address')
+        venue.phone = request.form.get('phone')
+        venue.image_link = request.form.get('image_link')
+        venue.facebook_link = request.form.get('facebook_link')
+        
+        db.session.commit()
+        flash('Venue ' + request.form['name'] + ' was successfully updated!')
+    except:
+        db.session.rollback()
+        print(sys.exc_info())
+        flash('An error occurred. Venue ' + request.form['name'] + ' could not be updated.')
+    finally:
+        db.session.close()
+
+    return redirect(url_for('venue_bp.show_venue', venue_id=venue_id))
 
 def delete_venue(venue_id):
     # TODO: Complete this endpoint for taking a venue_id, and using
