@@ -2,7 +2,7 @@ import sys
 from flask import render_template, redirect, url_for, request, flash, abort, jsonify
 from flask_sqlalchemy_session import current_session
 
-from models import Venue, Show
+from models import Venue, Show, Artist
 from forms import VenueForm, datetime
 
 from flask_sqlalchemy import SQLAlchemy
@@ -34,12 +34,27 @@ def search_venues():
 
     return render_template('pages/search_venues.html', results=results, search_term=search_term)
 
+def get_shows(shows):
+    data = []
+    for show in shows:
+        artist = Artist.query.get(show.venue_id)
+        data.append({
+            "artist_id":artist.id,
+            "artist_name": artist.name,
+            "artist_image_link": artist.image_link,
+            "start_time": show.start_time.strftime('%m/%d/%Y')
+        })
+    return data
+
 def show_venue(venue_id):
     venue = Venue.query.get(venue_id)
-
     current_time = datetime.now().strftime('%m/%d/%Y')
-    past_shows= Show.query.filter_by(venue_id=venue_id).filter(Show.start_time <= current_time)
-    upcoming_shows= Show.query.filter_by(venue_id=venue_id).filter(Show.start_time > current_time)
+    
+    past_shows = Show.query.filter_by(venue_id=venue_id).filter(Show.start_time <= current_time)
+    past_shows_data = get_shows(past_shows)
+
+    upcoming_shows = Show.query.filter_by(venue_id=venue_id).filter(Show.start_time > current_time)
+    upcoming_shows_data = get_shows(upcoming_shows)
 
     data = {
         'id': venue.id,
@@ -54,8 +69,8 @@ def show_venue(venue_id):
         'image_link': venue.image_link,
         'seeking_talent': venue.seeking_talent,
         'seeking_description': venue.seeking_description,
-        'past_shows': [],
-        'upcoming_shows': [],
+        'past_shows': past_shows_data,
+        'upcoming_shows': upcoming_shows_data,
         'past_shows_count': past_shows.count(),
         'upcoming_shows_count': upcoming_shows.count(),
     }
