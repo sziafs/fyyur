@@ -15,35 +15,35 @@ def search_artists():
     search_term = request.form.get('search_term', '')
     response = Artist.query.filter(Artist.name.ilike('%' + search_term + '%'))
     results = {
-        "count": response.count(),
-        "data": response
+        'count': response.count(),
+        'data': response
     }
 
     return render_template('pages/search_artists.html', results=results, search_term=search_term)
 
 def show_artist(artist_id):
     artist = Artist.query.get(artist_id)
-    data={
-        "id": artist.id,
-        "name": artist.name,
-        "genres": ["Rock n Roll", "Jazz", "Classical", "Folk"],
-        "city": artist.city,
-        "state": artist.state,
-        "phone": artist.phone,
-        "website": "https://www.gunsnpetalsband.com",
-        "facebook_link": artist.facebook_link,
-        "image_link": artist.image_link,
-        "seeking_venue": True,
-        "seeking_description": "Looking for shows to perform at in the San Francisco Bay Area!",
-        "past_shows": [{
-            "venue_id": 1,
-            "venue_name": "The Musical Hop",
-            "venue_image_link": "https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60",
-            "start_time": "2019-05-21T21:30:00.000Z"
+    data = {
+        'id': artist.id,
+        'name': artist.name,
+        'genres': ['Rock n Roll', 'Jazz', 'Classical', 'Folk'],
+        'city': artist.city,
+        'state': artist.state,
+        'phone': artist.phone,
+        'website': 'https://www.gunsnpetalsband.com',
+        'facebook_link': artist.facebook_link,
+        'image_link': artist.image_link,
+        'seeking_venue': True,
+        'seeking_description': 'Looking for shows to perform at in the San Francisco Bay Area!',
+        'past_shows': [{
+            'venue_id': 1,
+            'venue_name': 'The Musical Hop',
+            'venue_image_link': 'https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60',
+            'start_time': '2019-05-21T21:30:00.000Z'
         }],
-        "upcoming_shows": [],
-        "past_shows_count": 1,
-        "upcoming_shows_count": 0,
+        'upcoming_shows': [],
+        'past_shows_count': 1,
+        'upcoming_shows_count': 0,
     }
     
     return render_template('pages/show_artist.html', artist=data)
@@ -111,4 +111,21 @@ def edit_artist_submission(artist_id):
 
     return redirect(url_for('artist_bp.show_artist', artist_id=artist_id))
 
-
+def delete_artist(artist_id):
+    try:
+        artist = Artist.query.filter_by(id=artist_id).first_or_404()
+        current_session = db.object_session(artist)
+        current_session.delete(artist)
+        current_session.commit()
+        db.session.delete(artist)
+        db.session.commit()
+        flash('This artist was successfully deleted!')
+        return render_template('pages/home.html')
+    except:
+        db.session.rollback()
+        print(sys.exc_info())
+        flash('An error occurred. This artist could not be deleted.')
+    finally:
+        db.session.close()
+    
+    return redirect(url_for('artist_bp.artists'))
