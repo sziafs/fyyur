@@ -103,6 +103,11 @@ def edit_artist(artist_id):
     return render_template('forms/edit_artist.html', form=form, artist=artist)
 
 def edit_artist_submission(artist_id):
+    if request.form.get('seeking_venue') == 'y':
+        seeking_venue = True
+    else:
+        seeking_venue = False
+
     artist = Artist.query.get(artist_id)
 
     try:
@@ -110,13 +115,14 @@ def edit_artist_submission(artist_id):
         artist.city = request.form.get('city')
         artist.state = request.form.get('state')
         artist.phone = request.form.get('phone')
-        artist.genres = request.form.get('genres')
+        artist.genres = request.form.getlist('genres')
         artist.facebook_link = request.form.get('facebook_link')
         artist.image_link = request.form.get('image_link')
         artist.website_link = request.form.get('website_link')
-        artist.seeking_venue = request.form.get('seeking_venue')
+        artist.seeking_venue = seeking_venue
         artist.seeking_description = request.form.get('seeking_description')
         
+        db.session.merge(artist)
         db.session.commit()
         flash('Artist ' + request.form['name'] + ' was successfully updated!')
     except:

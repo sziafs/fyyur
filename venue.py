@@ -119,21 +119,27 @@ def edit_venue(venue_id):
     return render_template('forms/edit_venue.html', form=form, venue=venue)
 
 def edit_venue_submission(venue_id):
+    if request.form.get('seeking_talent') == 'y':
+        seeking_talent = True
+    else:
+        seeking_talent = False
+
     venue = Venue.query.get(venue_id)
 
     try:
-        venue.name = request.form.get('name')
+        venue.name = request.form.get('name', venue.name)
         venue.city = request.form.get('city')
         venue.state = request.form.get('state')
         venue.address = request.form.get('address')
         venue.phone = request.form.get('phone')
-        venue.genres = request.form.get('genres')
+        venue.genres = request.form.getlist('genres')
         venue.facebook_link = request.form.get('facebook_link')
         venue.image_link = request.form.get('image_link')
         venue.website_link = request.form.get('website_link')
-        venue.seeking_talent = request.form.get('seeking_talent')
+        venue.seeking_talent = seeking_talent
         venue.seeking_description = request.form.get('seeking_description')
 
+        db.session.merge(venue)
         db.session.commit()
         flash('Venue ' + request.form['name'] + ' was successfully updated!')
     except:
