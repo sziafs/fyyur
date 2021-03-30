@@ -15,6 +15,10 @@ from models import db
 
 from filters import format_datetime
 
+from venue_bp import venue_bp
+from artist_bp import artist_bp
+from show_bp import show_bp
+
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -27,7 +31,6 @@ app.config.from_object('config')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/postgres'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# db = SQLAlchemy(app)
 db.init_app(app)
 migrate = Migrate(app, db)
 
@@ -36,10 +39,6 @@ app.jinja_env.filters['datetime'] = format_datetime
 #----------------------------------------------------------------------------#
 # Blueprints registration.
 #----------------------------------------------------------------------------#
-
-from venue_bp import venue_bp
-from artist_bp import artist_bp
-from show_bp import show_bp
 
 app.register_blueprint(venue_bp, url_prefix='/venues')
 app.register_blueprint(artist_bp, url_prefix='/artists')
