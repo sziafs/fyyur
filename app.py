@@ -12,9 +12,7 @@ from logging import Formatter, FileHandler
 from flask_wtf import Form
 
 from models import db
-
 from filters import format_datetime
-
 from venue_bp import venue_bp
 from artist_bp import artist_bp
 from show_bp import show_bp
@@ -24,17 +22,12 @@ from show_bp import show_bp
 #----------------------------------------------------------------------------#
 
 app = Flask(__name__)
-
 moment = Moment(app)
-
 app.config.from_object('config')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/postgres'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.jinja_env.filters['datetime'] = format_datetime
 
 db.init_app(app)
 migrate = Migrate(app, db)
-
-app.jinja_env.filters['datetime'] = format_datetime
 
 #----------------------------------------------------------------------------#
 # Blueprints registration.
