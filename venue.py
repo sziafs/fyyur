@@ -67,6 +67,11 @@ def create_venue_form():
     return render_template('forms/new_venue.html', form=form)
 
 def create_venue_submission():
+    if request.form.get('seeking_talent') == 'y':
+        seeking_talent = True
+    else:
+        seeking_talent = False
+
     venue = Venue(
         name=request.form.get('name'),
         city=request.form.get('city'),
@@ -77,7 +82,7 @@ def create_venue_submission():
         facebook_link=request.form.get('facebook_link'),
         image_link=request.form.get('image_link'),
         website=request.form.get('website'),
-        seeking_talent=request.form.get('seeking_talent'),
+        seeking_talent=seeking_talent,
         seeking_description=request.form.get('seeking_description'),
     )
 
@@ -122,8 +127,12 @@ def edit_venue_submission(venue_id):
         venue.state = request.form.get('state')
         venue.address = request.form.get('address')
         venue.phone = request.form.get('phone')
-        venue.image_link = request.form.get('image_link')
+        venue.genres = request.form.get('genres')
         venue.facebook_link = request.form.get('facebook_link')
+        venue.image_link = request.form.get('image_link')
+        venue.website_link = request.form.get('website_link')
+        venue.seeking_talent = request.form.get('seeking_talent')
+        venue.seeking_description = request.form.get('seeking_description')
 
         db.session.commit()
         flash('Venue ' + request.form['name'] + ' was successfully updated!')
