@@ -1,5 +1,6 @@
 import sys
 from flask import render_template, redirect, url_for, request, flash, abort, jsonify
+from flask_sqlalchemy_session import current_session
 
 from models import Venue
 from forms import VenueForm
@@ -129,7 +130,10 @@ def edit_venue_submission(venue_id):
 
 def delete_venue(venue_id):
     try:
-        venue = Venue.query.get(venue_id)
+        venue = Venue.query.filter_by(id=venue_id).first_or_404()
+        current_session = db.object_session(venue)
+        current_session.delete(venue)
+        current_session.commit()
         db.session.delete(venue)
         db.session.commit()
         flash('This venue was successfully deleted!')
@@ -141,4 +145,4 @@ def delete_venue(venue_id):
     finally:
         db.session.close()
     
-    return None
+    return redirect(url_for('venue_bp.venues'))
