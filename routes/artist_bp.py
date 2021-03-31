@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from artist import artists, search_artists, show_artist, edit_artist, edit_artist_submission, create_artist_form, create_artist_submission, delete_artist
+from controllers.artist import artists, search_artists, show_artist, edit_artist, edit_artist_submission, create_artist_form, create_artist_submission, delete_artist
 
 artist_bp = Blueprint('artist_bp', __name__)
 

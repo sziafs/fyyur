@@ -2,7 +2,7 @@ import sys
 from flask import render_template, redirect, url_for, request, flash, abort, jsonify
 from flask_sqlalchemy_session import current_session
 
-from models import Venue, Show, Artist
+from models.models import Venue, Show, Artist
 from forms import VenueForm, datetime
 
 from flask_sqlalchemy import SQLAlchemy

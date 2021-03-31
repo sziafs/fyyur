@@ -11,11 +11,11 @@ import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
 
-from models import db
+from models.models import db
 from filters import format_datetime
-from venue_bp import venue_bp
-from artist_bp import artist_bp
-from show_bp import show_bp
+from routes.venue_bp import venue_bp
+from routes.artist_bp import artist_bp
+from routes.show_bp import show_bp
 
 #----------------------------------------------------------------------------#
 # App Config.

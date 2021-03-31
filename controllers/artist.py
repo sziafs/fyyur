@@ -1,7 +1,7 @@
 import sys
 from flask import render_template, redirect, url_for, request, flash
 
-from models import Artist, Venue, Show
+from models.models import Artist, Venue, Show
 from forms import ArtistForm, datetime
 
 from flask_sqlalchemy import SQLAlchemy

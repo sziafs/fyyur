@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from venue import venues, search_venues, show_venue, create_venue_form, create_venue_submission, edit_venue, edit_venue_submission, delete_venue
+from controllers.venue import venues, search_venues, show_venue, create_venue_form, create_venue_submission, edit_venue, edit_venue_submission, delete_venue
 
 venue_bp = Blueprint('venue_bp', __name__)
 
