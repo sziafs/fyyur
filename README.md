@@ -1,5 +1,5 @@
 <h4 align="center">
-  🚀 Lorem ipsum
+  🚀 Fyyur
 </h4>
 
 <p align="center">
@@ -26,12 +26,12 @@
 <br>
 
 ## :page_with_curl: About
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Fyyur is a booking site Fy-yur that facilitates bookings between artists who can play at venues, and venues who want to book artists
 
 ## :wrench: Built With
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+- [Flask](https://flask.palletsprojects.com/en/1.1.x/)
+- [SQLAlchemy](https://www.sqlalchemy.org/)
 
 ## 🤔 How to Contribute
 
@@ -45,6 +45,10 @@ After the merge of your pull request is done, you can delete your branch.
 ## :memo: License
 
 This project is under the MIT license. See the [LICENSE](LICENSE.md) file for more details.
+
+## :raised_hands: Acknowledgements 
+
+Thanks to the awesome Udacity Nanodegree Program helping me to be an extraordinary full stack developer! 
 
 ---
 
